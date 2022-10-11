@@ -1,0 +1,29 @@
+class Solution {
+    /*
+    
+    O(N logN) - LIS
+    public boolean increasingTriplet(int[] nums) {
+        int l = nums.length;
+        int dp[] = new int[l];
+        int len = 0;
+        for(int x : nums){
+            int i = Arrays.binarySearch(dp, 0, len, x);
+            if(i<0) i = -(i+1);
+            dp[i] = x;
+            if(i == len) len++;
+        }
+        return len >= 3;
+    }
+    */
+    
+    // o(n) approach
+    public boolean increasingTriplet(int[] nums){
+        int small = Integer.MAX_VALUE, big = small;
+        for(int x : nums){
+            if(x <= small) small = x;  
+            else if(x <= big) big = x; 
+            else return true;   // return if you find a number bigger than both
+        }
+        return false;
+    }
+}
