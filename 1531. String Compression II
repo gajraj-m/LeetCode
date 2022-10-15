@@ -1,0 +1,32 @@
+class Solution {
+    public int getLengthOfOptimalCompression(String s, int K) {
+        // dp[i][k]: the minimum length for s.substring(0, i) with at most k deletion.
+        int n = s.length();
+        int[][] dp = new int[n + 1][K + 1];
+        for (int[] i : dp) Arrays.fill(i, n);
+        dp[0][0] = 0;
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j <= K; j++) {
+                if (j > 0) // delete s[i]
+                    dp[i][j] = Math.min(dp[i][j], dp[i - 1][j - 1]);
+
+                // keep s[i]
+                int same = 0, removed = 0;
+                for (int p = i; p >= 1; p--) {
+                    if (s.charAt(p - 1) == s.charAt(i - 1)) same++;
+                    else removed++;
+                    if (removed > j) break;
+                    dp[i][j] = Math.min(dp[i][j], dp[p - 1][j - removed] + getLen(same)); 
+                }
+            }
+        }
+        return dp[n][K];
+    }
+    private int getLen(int count) {
+        if (count == 1) return 1;
+        else if (count < 10) return 2;
+        else if (count < 100) return 3;
+        else return 4;
+    }
+}
