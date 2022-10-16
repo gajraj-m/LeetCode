@@ -1,0 +1,30 @@
+// TOP down approach
+// Time complexity = O(N^2. D) ... where n is length of array, and D is days
+// Space = O(N.D)
+
+class Solution {
+    public int minDifficulty(int[] jd, int d) {
+        int l = jd.length;
+        if(l < d) return -1;
+        int[][] dp = new int[l+1][d+1];
+        for(int[] arr : dp) Arrays.fill(arr, -1); // because because difficulty can be as low as 0
+        return dfs(jd, d, dp, 0, l);
+    }
+    private int dfs(int[] jd, int d, int[][] dp, int idx, int len){
+        if(d == 1) {
+            int max = -1;
+            for(int i=idx; i<len; i++) max = Math.max(max, jd[i]);
+            return max;
+        }
+        
+        if(dp[idx][d] != -1) return dp[idx][d];
+        
+        int max = -1, res = Integer.MAX_VALUE;
+        
+        for(int i=idx; i<len-d+1; i++){
+            max = Math.max(max, jd[i]);
+            res = Math.min(res, max + dfs(jd, d-1, dp, i+1, len));
+        }
+        return dp[idx][d] = res;
+    }
+}
