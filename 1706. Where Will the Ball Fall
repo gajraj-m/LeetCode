@@ -1,0 +1,21 @@
+class Solution {
+    public int[] findBall(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        int[] res = new int[n];
+        
+        for(int i=0; i<n; i++){ // every column/ball one by one
+            int currCol = i, nextCol = -1;
+            for(int j=0; j<m; j++){ // traverse the rows one by one
+                nextCol = currCol + grid[j][currCol]; // 1 -> right, -1 -> left
+                
+                if(nextCol >= n || nextCol < 0 || grid[j][currCol] != grid[j][nextCol]){
+                    currCol = -1;
+                    break;
+                }
+                currCol = nextCol;
+            }
+            res[i] = currCol;
+        }        
+        return res;
+    }
+}
